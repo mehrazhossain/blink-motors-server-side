@@ -41,6 +41,9 @@ async function run() {
   try {
     await client.connect();
     const userCollection = client.db('blinkmotors-db').collection('users');
+    const productCollection = client
+      .db('blinkmotors-db')
+      .collection('products');
 
     app.get('/user', verifyJWT, async (req, res) => {
       const users = await userCollection.find().toArray();
@@ -52,6 +55,13 @@ async function run() {
       const user = await userCollection.findOne({ email: email });
       const isAdmin = user.role === 'admin';
       res.send({ admin: isAdmin });
+    });
+
+    // ! POST METHOD
+    app.post('/product', verifyJWT, async (req, res) => {
+      const product = req.body;
+      const result = await productCollection.insertOne(product);
+      res.send(result);
     });
 
     app.put('/user/admin/:email', verifyJWT, async (req, res) => {
