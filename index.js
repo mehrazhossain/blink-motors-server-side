@@ -44,6 +44,7 @@ async function run() {
     const productCollection = client
       .db('blinkmotors-db')
       .collection('products');
+    const orderCollection = client.db('blinkmotors-db').collection('orders');
 
     // ! GET METHOD
     app.get('/user', verifyJWT, async (req, res) => {
@@ -74,6 +75,12 @@ async function run() {
     app.post('/product', verifyJWT, async (req, res) => {
       const product = req.body;
       const result = await productCollection.insertOne(product);
+      res.send(result);
+    });
+
+    app.post('/order', verifyJWT, async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
       res.send(result);
     });
 
