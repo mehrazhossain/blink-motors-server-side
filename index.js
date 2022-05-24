@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 
 const app = express();
@@ -45,6 +45,7 @@ async function run() {
       .db('blinkmotors-db')
       .collection('products');
 
+    // ! GET METHOD
     app.get('/user', verifyJWT, async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
@@ -57,6 +58,18 @@ async function run() {
       res.send({ admin: isAdmin });
     });
 
+    app.get('/product', verifyJWT, async (req, res) => {
+      const products = await productCollection.find().toArray();
+      res.send(products);
+    });
+
+    app.get('/product/:id', verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const product = await productCollection.findOne(query);
+      res.send(product);
+    });
+
     // ! POST METHOD
     app.post('/product', verifyJWT, async (req, res) => {
       const product = req.body;
@@ -64,6 +77,7 @@ async function run() {
       res.send(result);
     });
 
+    // ! PUT METHOD
     app.put('/user/admin/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
       const requester = req.decoded.email;
