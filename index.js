@@ -82,6 +82,19 @@ async function run() {
       const result = await orderCollection.find().toArray();
       res.send(result);
     });
+    app.get('/order/:email', verifyJWT, async (req, res) => {
+      const result = await orderCollection.find().toArray();
+      res.send(result);
+    });
+
+    // ! DELETE METHOD
+    app.delete('/order/:id', verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: ObjectId(id) };
+      const result = await orderCollection.deleteOne(query);
+      res.send(result);
+    });
 
     // ! POST METHOD
     app.post('/product', verifyJWT, async (req, res) => {
@@ -142,6 +155,16 @@ async function run() {
         $set: userInfo,
       };
       const result = await userCollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    });
+
+    app.put('/order/admin/:id', verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $set: { status: 'confirmed' },
+      };
+      const result = await orderCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
   } finally {
