@@ -41,6 +41,7 @@ async function run() {
   try {
     await client.connect();
     const userCollection = client.db('blinkmotors-db').collection('users');
+    const reviewCollection = client.db('blinkmotors-db').collection('reviews');
     const productCollection = client
       .db('blinkmotors-db')
       .collection('products');
@@ -100,6 +101,11 @@ async function run() {
     app.post('/product', verifyJWT, async (req, res) => {
       const product = req.body;
       const result = await productCollection.insertOne(product);
+      res.send(result);
+    });
+    app.post('/user/review', verifyJWT, async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
       res.send(result);
     });
 
