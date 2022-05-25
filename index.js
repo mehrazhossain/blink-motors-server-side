@@ -47,6 +47,25 @@ async function run() {
     const orderCollection = client.db('blinkmotors-db').collection('orders');
 
     // ! GET METHOD
+    app.get('/admin/:email', async (req, res) => {
+      const email = req.params.email;
+      const user = await userCollection.findOne({ email: email });
+      const isAdmin = user.role === 'admin';
+      res.send({ admin: isAdmin });
+    });
+
+    app.get('/product', async (req, res) => {
+      const products = await productCollection.find().toArray();
+      res.send(products);
+    });
+
+    app.get('/product/:id', verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const product = await productCollection.findOne(query);
+      res.send(product);
+    });
+
     app.get('/user', verifyJWT, async (req, res) => {
       const users = await userCollection.find().toArray();
       res.send(users);
@@ -59,23 +78,9 @@ async function run() {
       res.send(result);
     });
 
-    app.get('/admin/:email', async (req, res) => {
-      const email = req.params.email;
-      const user = await userCollection.findOne({ email: email });
-      const isAdmin = user.role === 'admin';
-      res.send({ admin: isAdmin });
-    });
-
-    app.get('/product', verifyJWT, async (req, res) => {
-      const products = await productCollection.find().toArray();
-      res.send(products);
-    });
-
-    app.get('/product/:id', verifyJWT, async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const product = await productCollection.findOne(query);
-      res.send(product);
+    app.get('/order', verifyJWT, async (req, res) => {
+      const result = await orderCollection.find().toArray();
+      res.send(result);
     });
 
     // ! POST METHOD
