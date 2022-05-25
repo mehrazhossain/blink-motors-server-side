@@ -46,6 +46,7 @@ async function run() {
       .db('blinkmotors-db')
       .collection('products');
     const orderCollection = client.db('blinkmotors-db').collection('orders');
+    const blogCollection = client.db('blinkmotors-db').collection('blogs');
 
     // ! GET METHOD
     app.get('/admin/:email', async (req, res) => {
@@ -88,6 +89,15 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/user/review', async (req, res) => {
+      const result = await reviewCollection.find().toArray();
+      res.send(result);
+    });
+    app.get('/user/blog', async (req, res) => {
+      const result = await blogCollection.find().toArray();
+      res.send(result);
+    });
+
     // ! DELETE METHOD
     app.delete('/order/:id', verifyJWT, async (req, res) => {
       const id = req.params.id;
@@ -106,6 +116,11 @@ async function run() {
     app.post('/user/review', verifyJWT, async (req, res) => {
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+    app.post('/admin/blog', verifyJWT, async (req, res) => {
+      const blog = req.body;
+      const result = await blogCollection.insertOne(blog);
       res.send(result);
     });
 
