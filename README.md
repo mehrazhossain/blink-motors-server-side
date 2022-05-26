@@ -1,7 +1,9 @@
 # Blink Motors (Manufacturer Website)
-[Live Website](https://blink-motors.web.app/)
-
 # Server Side
+[Live Website](https://blink-motors.web.app/)
+## For Login as an Admin
+### Email: demo@admin.com
+### Password: 123456`
 
 ## Available Features
 * Admin & normal user both are separated
