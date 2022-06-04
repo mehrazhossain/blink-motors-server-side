@@ -196,9 +196,9 @@ run().catch(console.dir);
 
 // Initial response for call root directory
 app.get('/', (req, res) => {
-  res.send(`Server running on port ${port}`);
+  res.send(`Heroku Server Running on Port ${port}`);
 });
 
 app.listen(port, () => {
-  console.log(`Heroku app listening on port`, port);
+  console.log(`Blink Motors listening on port`, port);
 });
