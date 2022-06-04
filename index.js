@@ -200,5 +200,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Blink Motors app listening on port`, port);
+  console.log(`Heroku app listening on port`, port);
 });
