@@ -110,6 +110,7 @@ async function run() {
     // ! POST METHOD
     app.post('/product', verifyJWT, async (req, res) => {
       const product = req.body;
+      console.log(product);
       const result = await productCollection.insertOne(product);
       res.send(result);
     });
